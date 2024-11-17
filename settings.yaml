@@ -1,0 +1,23 @@
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  password: wang201018
+  config: "charset=utf8mb4&parseTime=True&loc=Local"
+  database: backend_core
+  max_idle_conns: 10
+  max_open_conns: 100
+  log_mode: console
+  log_level: dev
+
+logger:
+  log_level: info
+  prefix: "[DoMyBlog backend]"
+  directory: "./log"
+  show_line: true
+  log_in_console: true
+
+system:
+  host: "0.0.0.0"
+  port: 8080
+  env: dev
