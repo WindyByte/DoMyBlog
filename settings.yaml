@@ -4,7 +4,7 @@ mysql:
   user: root
   password: wang201018
   config: "charset=utf8mb4&parseTime=True&loc=Local"
-  database: backend_core
+  database: backend_core.db
   max_idle_conns: 10
   max_open_conns: 100
   log_mode: console
@@ -21,3 +21,10 @@ system:
   host: "0.0.0.0"
   port: 8080
   env: dev
+
+redis:
+  addr: 127.0.0.1:6379
+  password:
+  db: 0
+  max_retries: 3
+  pool_size: 10

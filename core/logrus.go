@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"os"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -29,7 +30,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	case logrus.ErrorLevel, logrus.FatalLevel, logrus.PanicLevel:
 		levelColor = red
 	default:
-		levelColor = blue
+		levelColor = green
 	}
 	var b *bytes.Buffer
 	if entry.Buffer != nil {
@@ -49,7 +50,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			global.Config.Logger.Prefix,
 			timeStamp,
 			levelColor,
-			entry.Level,
+			strings.ToUpper(entry.Level.String()),
 			fileVal,
 			funcVal,
 			entry.Message,
@@ -62,7 +63,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			global.Config.Logger.Prefix,
 			timeStamp,
 			levelColor,
-			entry.Level,
+			strings.ToUpper(entry.Level.String()),
 			entry.Message,
 		)
 		if err != nil {
@@ -95,4 +96,10 @@ func InitDefaultLogger() {
 		level = logrus.DebugLevel // 设置最低的日志级别
 	}
 	logrus.SetLevel(level) // 设置最低的日志级别
+}
+
+func convertLogLevel(level *logrus.Entry) string {
+	// 将字符串转换为 logrus.Level 类型
+
+	return ""
 }

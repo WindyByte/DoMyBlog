@@ -20,6 +20,5 @@ func InitConfig() *config.Config {
 		log.Fatalf("Unmarshal Config File Error: %v\n", err)
 	}
 	log.Printf("Init Config: %+v", conf)
-	//global.Config = &conf
 	return &conf
 }

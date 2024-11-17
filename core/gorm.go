@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-func InitGorm() *gorm.DB {
+func InitGormClient() *gorm.DB {
 	// 初始化数据库
 	if global.Config.MySQL.Host == "" {
 		return nil
 	}
-	db, err := gorm.Open(sqlite.Open("backend_core.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(global.Config.MySQL.Database), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -32,7 +32,7 @@ func InitGorm() *gorm.DB {
 	//})
 	sqlDB, err := db.DB()
 	if err != nil {
-		panic("failed to get sql.DB")
+		panic("failed to get sql.MySQLClient")
 	}
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
