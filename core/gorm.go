@@ -2,8 +2,6 @@ package core
 
 import (
 	"backend/global"
-	"backend/models"
-	"fmt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -20,22 +18,18 @@ func InitGorm() *gorm.DB {
 		panic("failed to connect database")
 	}
 	// 自动迁移数据表
-	err = db.AutoMigrate(&models.UserInfo{})
-	if err != nil {
-		return nil
-	}
-	db.Create(&models.UserInfo{
-		Username: "admin",
-		Passwd:   "admin",
-	})
-	db.Create(&models.UserInfo{
-		Username: "admin2",
-		Passwd:   "admin2",
-	})
-	var tables []string
-	db = db.Debug()
-	db.Raw("SELECT name FROM sqlite_master WHERE type='table'").Scan(&tables)
-	fmt.Println("Tables in database:", tables)
+	//err = db.AutoMigrate(&models.UserInfo{})
+	//if err != nil {
+	//	return nil
+	//}
+	//db.Create(&models.UserInfo{
+	//	Username: "admin",
+	//	Passwd:   "admin",
+	//})
+	//db.Create(&models.UserInfo{
+	//	Username: "admin2",
+	//	Passwd:   "admin2",
+	//})
 	sqlDB, err := db.DB()
 	if err != nil {
 		panic("failed to get sql.DB")

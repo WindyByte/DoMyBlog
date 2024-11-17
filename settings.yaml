@@ -12,7 +12,7 @@ mysql:
 
 logger:
   log_level: info
-  prefix: "[DoMyBlog backend]"
+  prefix: "[DoMyBlog]"
   directory: "./log"
   show_line: true
   log_in_console: true
