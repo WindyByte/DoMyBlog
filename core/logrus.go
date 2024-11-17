@@ -97,9 +97,3 @@ func InitDefaultLogger() {
 	}
 	logrus.SetLevel(level) // 设置最低的日志级别
 }
-
-func convertLogLevel(level *logrus.Entry) string {
-	// 将字符串转换为 logrus.Level 类型
-
-	return ""
-}
