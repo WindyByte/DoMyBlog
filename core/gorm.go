@@ -2,7 +2,7 @@ package core
 
 import (
 	"backend/global"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 	"time"
@@ -11,32 +11,30 @@ import (
 func InitGormClient() *gorm.DB {
 	// 初始化数据库
 	if global.Config.MySQL.Host == "" {
+		global.Log.Errorf("MySQL host is empty, skip init mysql")
 		return nil
 	}
-	db, err := gorm.Open(sqlite.Open(global.Config.MySQL.Database), &gorm.Config{})
+	dsn := global.Config.MySQL.Dsn()
+	global.Log.Infof("MySQL DSN: %v", dsn)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		global.Log.Errorf("Failed to connect database, err: %v", err)
+		return nil
 	}
-	// 自动迁移数据表
-	//err = db.AutoMigrate(&models.UserInfo{})
-	//if err != nil {
-	//	return nil
-	//}
-	//db.Create(&models.UserInfo{
-	//	Username: "admin",
-	//	Passwd:   "admin",
-	//})
-	//db.Create(&models.UserInfo{
-	//	Username: "admin2",
-	//	Passwd:   "admin2",
-	//})
+	// 执行查询以获取当前数据库中的表列表
+	var tables []string
+	result := db.Raw("SHOW TABLES").Scan(&tables)
+	if result.Error != nil {
+		log.Fatalf("Failed to query tables: %v", result.Error)
+	}
+	// 输出表列表
+	global.Log.Infof("Tables in database: %v", tables)
 	sqlDB, err := db.DB()
 	if err != nil {
-		panic("failed to get sql.MySQLClient")
+		panic("Failed to get sql.MySQLClient")
 	}
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
-	log.Printf("db: %+v", db)
 	return db
 }
