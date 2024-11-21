@@ -3,7 +3,7 @@ package main
 import (
 	"backend/core"
 	"backend/global"
-	"backend/routers"
+	"backend/model"
 )
 
 func main() {
@@ -12,11 +12,15 @@ func main() {
 	global.Log = core.InitLogger()
 	global.RedisClient = core.InitRedisClient()
 	global.MySqlClient = core.InitGormClient()
-	r := routers.InitRouter()
+	//r := routers.InitRouter()
 	global.Log.Info("Start backend server.")
-	err := r.Run(global.Config.System.Addr())
-	if err != nil {
+	//err := r.Run(global.Config.System.Addr())
+	//core.InitDBData(global.MySqlClient)
+	var users []model.UserInfo
+	result := global.MySqlClient.Where("role = ?", 1).Find(&users)
+	if result.Error != nil {
+		global.Log.Errorf("Failed to query tables: %v", result.Error)
 		return
 	}
-
+	global.Log.Infof("users: %v", users)
 }
