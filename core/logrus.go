@@ -1,7 +1,6 @@
 package core
 
 import (
-	"backend/global"
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
@@ -43,6 +42,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	} else {
 		b = &bytes.Buffer{}
 	}
+	basicConfig := GetBasicConfig()
 	// 自定义日期格式
 	timeStamp := entry.Time.Format("2006-01-02 15:04:05")
 	if entry.HasCaller() {
@@ -52,7 +52,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		funcName := entry.Caller.Function
 		filePath := entry.Caller.File + ":" + strconv.Itoa(entry.Caller.Line)
 		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%d;%dm[%s]\x1b[0m %s %s \x1b[%d;%dm%s\x1b[0m\n",
-			global.Config.Logger.Prefix,
+			basicConfig.Logger.Prefix,
 			timeStamp,
 			bold,
 			levelColor,
@@ -68,7 +68,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		}
 	} else {
 		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%dm[%s]\x1b[0m %s\n",
-			global.Config.Logger.Prefix,
+			basicConfig.Logger.Prefix,
 			timeStamp,
 			levelColor,
 			strings.ToUpper(entry.Level.String()),
@@ -81,27 +81,17 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-func InitLogger() *logrus.Logger {
+// initLogger 初始化日志记录器
+func initLogger() *logrus.Logger {
+	basicConfig := GetBasicConfig()
 	mLog := logrus.New()
 	mLog.SetOutput(os.Stdout)          // 设置输出类型
 	mLog.SetReportCaller(true)         // 开启返回函数名和行号
 	mLog.SetFormatter(&LogFormatter{}) // 设置自定义的 Formatter
-	level, err := logrus.ParseLevel(global.Config.Logger.LogLevel)
+	level, err := logrus.ParseLevel(basicConfig.Logger.LogLevel)
 	if err != nil {
 		level = logrus.DebugLevel // 设置最低的日志级别
 	}
 	mLog.SetLevel(level) // 设置最低的日志级别
 	return mLog
-}
-
-func InitDefaultLogger() {
-	// 全局 log
-	logrus.SetOutput(os.Stdout)          // 设置输出类型
-	logrus.SetReportCaller(true)         // 开启返回函数名和行号
-	logrus.SetFormatter(&LogFormatter{}) // 设置自定义的 Formatter
-	level, err := logrus.ParseLevel(global.Config.Logger.LogLevel)
-	if err != nil {
-		level = logrus.DebugLevel // 设置最低的日志级别
-	}
-	logrus.SetLevel(level) // 设置最低的日志级别
 }
