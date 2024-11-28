@@ -12,10 +12,17 @@ var (
 )
 
 func GenID() int64 {
-	snowflakeClient, err := snowflake.NewNode(1)
-	if err != nil {
-		core.GetLogger().Errorf("GenID failed, err: %v", err)
-		return -1
+	if snowflakeClient == nil {
+		onceSnowFlake.Do(initSnowflake)
 	}
 	return snowflakeClient.Generate().Int64()
+}
+
+func initSnowflake() {
+	node, err := snowflake.NewNode(1)
+	if err != nil {
+		core.GetLogger().Errorf("initSnowflake, err: %v", err)
+		return
+	}
+	snowflakeClient = node
 }
