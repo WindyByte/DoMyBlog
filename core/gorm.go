@@ -1,6 +1,7 @@
 package core
 
 import (
+	"backend/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,6 +18,29 @@ func initGormClient() *gorm.DB {
 	if err != nil {
 		GetLogger().Errorf("Failed to connect database, err: %v", err)
 		return nil
+	}
+	for _, table := range GetBasicConfig().MySQL.Tables {
+		if table == "" {
+			continue
+		}
+		if db.Migrator().HasTable(table) {
+			continue
+		}
+		GetLogger().Infof("AutoMigrate Table: %v", table)
+		switch table {
+		case "user_infos":
+			err = db.AutoMigrate(&model.UserInfo{})
+			if err != nil {
+				GetLogger().Errorf("Failed to AutoMigrate Table: %v, err: %v", table, err)
+				return nil
+			}
+		case "article_infos":
+			err = db.AutoMigrate(&model.ArticleInfo{})
+			if err != nil {
+				GetLogger().Errorf("Failed to AutoMigrate Table: %v, err: %v", table, err)
+				return nil
+			}
+		}
 	}
 	return db
 }

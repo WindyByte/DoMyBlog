@@ -51,7 +51,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		// 其中文件:行号 函数名 可以根据需求选择是否输出
 		funcName := entry.Caller.Function
 		filePath := entry.Caller.File + ":" + strconv.Itoa(entry.Caller.Line)
-		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%d;%dm[%s]\x1b[0m %s %s \x1b[%d;%dm%s\x1b[0m\n",
+		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%d;%dm[%s]\x1b[0m %s %s \x1b[%d;%dm[%s]\x1b[0m\n",
 			basicConfig.Logger.Prefix,
 			timeStamp,
 			bold,
@@ -67,7 +67,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 			return nil, err
 		}
 	} else {
-		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%dm[%s]\x1b[0m %s\n",
+		_, err := fmt.Fprintf(b, "%s[%s]\x1b[%dm[%s]\x1b[0m[%s]\n",
 			basicConfig.Logger.Prefix,
 			timeStamp,
 			levelColor,

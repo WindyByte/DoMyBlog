@@ -1,10 +1,16 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"backend/controller"
+	"github.com/gin-gonic/gin"
+)
 
 func articleRouter(r *gin.Engine) {
-	br := r.Group("/api/v1/blog")
+	b := r.Group("/api/v1/article")
 	{
-		br.GET("/ping", pong)
+		b.GET("/ping", pong)
+		b.GET("/related", controller.GetRelateArticles)
+		b.GET("/details", controller.GetArticleDetail)
+		b.POST("/publish", controller.PublishArticle)
 	}
 }
