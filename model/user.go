@@ -1,15 +1,13 @@
 package model
 
-import "gorm.io/gorm"
-
 type UserInfo struct {
-	gorm.Model `json:"meta"`
-	UserID     string `gorm:"index;type:CHAR(36);column:user_id" json:"userId"`               // 主键，指定为 CHAR(36)
-	UserName   string `gorm:"type:VARCHAR(100);column:user_name" json:"name,omitempty"`       // 指定为 VARCHAR(100)
-	Passwd     string `gorm:"type:TEXT;column:passwd" json:"passwd,omitempty"`                // 指定为 TEXT
-	AvatarURL  string `gorm:"type:VARCHAR(255);column:avatar_url" json:"avatarUrl,omitempty"` // 指定为 VARCHAR(255)
-	Email      string `gorm:"type:VARCHAR(150);column:email" json:"email,omitempty"`          // 唯一，指定为 VARCHAR(150)
-	Role       Role   `gorm:"type:INT;column:role" json:"role,omitempty"`                     // 指定为 ENUM 类型
+	UserID    int64  `gorm:"index;primaryKey;BIGINT;column:user_id" json:"userID"`
+	UserName  string `gorm:"type:VARCHAR(100);column:user_name" json:"userName,omitempty"`
+	Passwd    string `gorm:"type:VARCHAR(100);column:passwd" json:"passwd,omitempty"`
+	AvatarURL string `gorm:"type:VARCHAR(255);column:avatar_url" json:"avatarUrl,omitempty"` // 头像URL
+	Email     string `gorm:"type:VARCHAR(150);column:email" json:"email,omitempty"`
+	Role      Role   `gorm:"type:TINYINT;column:role" json:"role,omitempty"` // 指定为 TINYINT 类型
+	MetaInfo
 }
 
 func (UserInfo) TableName() string {

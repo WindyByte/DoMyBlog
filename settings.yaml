@@ -5,6 +5,9 @@ mysql:
   password: wang201018
   config: "charset=utf8mb4&parseTime=True&loc=Local"
   database: backend_core
+  tables:
+    - user_infos
+    - article_infos
   max_idle_conns: 10
   max_open_conns: 100
   log_mode: console
