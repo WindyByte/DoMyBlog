@@ -40,10 +40,10 @@ func GetArticleDetail(c *gin.Context) {
 }
 
 type PublishArticleReq struct {
-	Title   string `json:"title"`          // 文章标题
-	Html    string `json:"html"`           // HTML渲染后的文章内容
-	Content string `json:"markdown"`       // 文章内容
-	Tags    string `json:"tags,omitempty"` // 文章标签
+	Title   string   `json:"title"`          // 文章标题
+	Html    string   `json:"html"`           // HTML渲染后的文章内容
+	Content string   `json:"markdown"`       // 文章内容
+	Tags    []string `json:"tags,omitempty"` // 文章标签
 }
 
 func PublishArticle(c *gin.Context) {

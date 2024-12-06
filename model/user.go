@@ -2,7 +2,7 @@ package model
 
 type UserInfo struct {
 	UserID    int64  `gorm:"index;primaryKey;BIGINT;column:user_id" json:"userID"`
-	UserName  string `gorm:"type:VARCHAR(100);column:user_name" json:"userName,omitempty"`
+	UserName  string `gorm:"type:VARCHAR(100);unique;column:user_name" json:"userName,omitempty"`
 	Passwd    string `gorm:"type:VARCHAR(100);column:passwd" json:"passwd,omitempty"`
 	AvatarURL string `gorm:"type:VARCHAR(255);column:avatar_url" json:"avatarUrl,omitempty"` // 头像URL
 	Email     string `gorm:"type:VARCHAR(150);column:email" json:"email,omitempty"`

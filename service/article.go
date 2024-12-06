@@ -5,6 +5,8 @@ import (
 	"backend/infra"
 	"backend/model"
 	"backend/utils"
+	"sort"
+	"strings"
 )
 
 type ArticleInfo struct {
@@ -56,9 +58,11 @@ func GetArticleDetail(articleID int64) (ArticleInfo, error) {
 	}, nil
 }
 
-func PublishArticle(title, content, tags string) (int64, error) {
+func PublishArticle(title, content string, tagList []string) (int64, error) {
 	articleID := utils.GenID()
 	userID := utils.GenID()
+	sort.Strings(tagList)
+	tags := strings.Join(tagList, ",")
 	articleInfo := model.ArticleInfo{
 		ArticleID: articleID,
 		UserID:    userID,
